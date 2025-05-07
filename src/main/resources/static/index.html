@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pneumonia Detection - VVMC</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #3949ab;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    main {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    h2 {
+      color: #2e3c9d;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .upload-box {
+      border: 2px dashed #aaa;
+      padding: 30px;
+      text-align: center;
+      background-color: #fff;
+      border-radius: 10px;
+    }
+    .upload-box input[type="file"] {
+      margin: 15px 0;
+    }
+    .btn {
+      background-color: #3949ab;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+    .btn:hover {
+      background-color: #303f9f;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #00695c;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Pneumonia Detection Using Deep Learning</h1>
+    <h1>Project by  VVMC</h1>
+  </header>
+
+  <main>
+    <div class="section">
+      <h2>What is Pneumonia?</h2>
+      <p>Pneumonia is a serious lung infection that can cause mild to severe illness. It inflames the air sacs in one or both lungs, which may fill with fluid. If untreated, it can become life-threatening, especially for children, the elderly, and those with weakened immune systems.</p>
+    </div>
+
+    <div class="section">
+      <h2>How Our AI Works</h2>
+      <p>We use a deep learning model based on Convolutional Neural Networks (CNNs), specifically the VGG architecture. CNNs are powerful image recognition models that can identify features like patterns, textures, and shapes. Our model is trained on thousands of chest X-ray images to distinguish between healthy and pneumonia-affected lungs.</p>
+    </div>
+
+    <div class="section upload-box">
+      <h2>Upload a Chest X-ray Image</h2>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required />
+        <br />
+        <button class="btn" type="submit">Predict</button>
+      </form>
+      <div id="result"></div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById("uploadForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+
+      fetch("/predict", {
+        method: "POST",
+        body: formData
+      })
+        .then(response => response.text())
+        .then(result => {
+          document.getElementById("result").innerText = result;
+        })
+        .catch(error => {
+          document.getElementById("result").innerText = "Error occurred during prediction.";
+          console.error("Error:", error);
+        });
+    });
+  </script>
+</body>
+</html>
